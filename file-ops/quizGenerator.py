@@ -19,3 +19,13 @@ for quizNum in range(5):
         wrongAnswers = random.sample(wrongAnswers, 3)
         options = wrongAnswers + [correctAnswer]
         random.shuffle(options)
+
+        quizFile.write('%s. What is the capital of %s?\n' % (questionNum + 1, provinces[questionNum]))
+        for i in range(4):
+            quizFile.write(' %s. %s\n' % ('ABCD'[i], options[i]))
+        quizFile.write('\n')
+
+        answerFile.write('%s. %s\n' % (questionNum + 1, 'ABCD'[options.index(correctAnswer)]))
+
+quizFile.close()
+answerFile.close()
