@@ -1,0 +1,22 @@
+#!groovy
+@Library('${PACMAN_NAME}@master') __
+
+pacmanPipelineGenericDocker(
+    nodeLabel: ${NODE_LABEL},
+    semVersion: {
+        return env.BUILD_NUMBER
+    },
+    numToKeep: ${NUM_TO_KEEP},
+    yamlProperties: [
+    ],
+    preBuild: {
+        
+    },
+    buildHook: {
+        
+    },
+    postFinally: {
+        if ( currentBuild.result == null ) { currentBuild.result = 'SUCCESS' }
+        emailext body: '${SCRIPT, template="customworkflow-pipeline.template"}', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: '${BUILD_STATUS} -- ${JOB_NAME}'
+    }
+)
