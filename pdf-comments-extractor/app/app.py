@@ -1,6 +1,7 @@
 import sys, os, fitz
 from PyPDF2 import PdfFileWriter, PdfFileReader
 from pprint import pprint
+from exporter import FileExporter
 
 def _parse_highlight(annot: fitz.Annot, wordlist: list):
     points = annot.vertices
@@ -16,6 +17,7 @@ def _parse_highlight(annot: fitz.Annot, wordlist: list):
 def run():
     try :
         file_name = sys.argv[1]
+        ouput_file = sys.argv[2]
     except :
         print('Please specify the absolute path of target PDF file.')
 
@@ -58,6 +60,10 @@ def run():
                         result_notes[i]["comments"].append(annot.getObject()['/Contents'])
         except:
             raise Exception("Error when reading comments on page %d" % i)
+    
+    file_exporter = FileExporter(ouput_file, 'text')
+    file_exporter.run()
+
     pprint(result_notes)
 
 if __name__ == "__main__":
